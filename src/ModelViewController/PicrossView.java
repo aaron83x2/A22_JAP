@@ -115,12 +115,7 @@ public class PicrossView extends JFrame  {
 //        New.addActionListener(e->newGame());
 //        New.addActionListener(Controller::handleButtonClick);
 
-        New.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Controls.handleButtonClick();
-            }
-        });
+        New.addActionListener(e-> newGame());
         game.add(New);
 
         //Adding Solution Item to Game
@@ -222,8 +217,9 @@ public class PicrossView extends JFrame  {
 //        top.add(space);
 
         //Mark Checkbox
-        markButton = new JButton();
+        markButton = new JButton("Mark");
         markButton.setSize(200,200);
+
         markButton.addActionListener(e -> markCheck());
         space.add(markButton);
         top.add(space);
@@ -341,10 +337,7 @@ public class PicrossView extends JFrame  {
         historyArea.append("Pos: " + (xPos+1) +"," + (yPos+1) +" clicked" +"\n");
     }
 
-//    public void newGame(){
-//        this.dispose();
-//        new View(5,5);
-//    }
+
 
     public void markCheck(){
 //        historyArea.append( " " + "\n");
@@ -362,7 +355,6 @@ public class PicrossView extends JFrame  {
 //
             }
         }
-
 
     }
 
@@ -457,97 +449,5 @@ public class PicrossView extends JFrame  {
     }
 
 
-    public void resizeTable(){
 
-    }
-
-
-
-
-//    @Override
-    public void actionPerformed(ActionEvent e) {
-
-
-
-
-
-        /*
-        //If button is clicked
-        for(int  i = 0; i<row; i++){
-            for(int j = 0; j<col;j++) {
-
-                if (e.getSource() == buttons[i][j]) {
-                    //Light Button at index i Cyan
-                    buttons[i][j].setBackground(defaultColor);
-                    historyArea.append("Pos: " + (i+1) +"," + (j+1) +" clicked" +"\n");
-
-                    pointsCounter = pointsCounter + 1;
-                    pointsTitle.setText("Points: " + pointsCounter);
-
-                }
-            }
-        }
-        //If the reset button is pressed
-        if(e.getSource() == reset){
-            historyArea.append("Reset Clicked \n");
-            //All button colors reset back to white
-            for(int  i = 0; i<row; i++) {
-                for (int j = 0; j <col; j++) {
-                    buttons[i][j].setBackground(getBackground());
-                }
-            }
-            pointsCounter = 0;
-            pointsTitle.setText("Points: " + pointsCounter);
-
-        }
-
-        if(e.getSource() == colors){
-            ColorMenu menu = new ColorMenu();
-
-        }
-
-        if(e.getSource() == about){
-            JOptionPane.showMessageDialog(null,"Use the numbers as hints to select" +
-                    "the correct button. Green means the button selected is correct and Red means that the button selected is " +
-                    "incorrect.","Picross",JOptionPane.INFORMATION_MESSAGE);
-        }
-
-
-
-
-        if(e.getSource() == combo){
-            String selectedGrid = (String) combo.getSelectedItem();
-
-
-            switch(selectedGrid){
-
-                case "4x4":
-                    this.dispose();
-                    new View(4,4);
-                    historyArea.setText("4x4 Selected");
-                    break;
-
-                case "5x5":
-                    this.dispose();
-                    new View(5,5);
-                    historyArea.setText("5x5 Selected");
-                    break;
-
-                case "6x6":
-                    this.dispose();
-                    new View(6,6);
-                    historyArea.append("6x6 Selected \n");
-                    break;
-
-                case "7x7":
-                    this.dispose();
-                    new View(7,7);
-                    historyArea.append("7x7 Selected \n");
-                    break;
-            }
-
-        }
-
-        */
-    }
 }

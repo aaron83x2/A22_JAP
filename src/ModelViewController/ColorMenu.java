@@ -63,14 +63,13 @@ public class ColorMenu extends JFrame implements ActionListener {
         //Incorrect
         incorrect = new JPanel();
         incorrect.setPreferredSize(new Dimension(100,100));
-        incorrect.setBackground(incorrectColor);
+        incorrect.setBackground(Color.RED);
         colorsPanel.add(incorrect);
 
         //Marked
         marked = new JPanel();
         marked.setPreferredSize(new Dimension(100,100));
         marked.setBackground(Color.YELLOW);
-        marked.setBackground(markedColor);
         colorsPanel.add(marked);
 
 
@@ -134,23 +133,20 @@ public class ColorMenu extends JFrame implements ActionListener {
         if(e.getSource() == correctButton){
             correctColor = JColorChooser.showDialog(this, "Select a Color", correctColor);
             correct.setBackground(correctColor);
-            this.dispose();
-
-//            view.setColor(getCorrectColor());
-            //setCorrectColor(correctColor);
+//            this.dispose();
         }
 
-//        if(e.getSource() == incorrectButton){
-//            incorrectColor = JColorChooser.showDialog(this, "Select a Color", incorrectColor);
-//            incorrect.setBackground(incorrectColor);
-//            setCorrectColor(incorrectColor);
-//        }
-//
-//        if(e.getSource() == markedButton){
-//            markedColor = JColorChooser.showDialog(this, "Select a Color", markedColor);
-//            marked.setBackground(markedColor);
-//            setCorrectColor(markedColor);
-//        }
+        if(e.getSource() == incorrectButton){
+            incorrectColor = JColorChooser.showDialog(this, "Select a Color", incorrectColor);
+            incorrect.setBackground(incorrectColor);
+//            this.dispose();
+        }
+
+        if(e.getSource() == markedButton){
+            markedColor = JColorChooser.showDialog(this, "Select a Color", markedColor);
+            marked.setBackground(markedColor);
+//            this.dispose();
+        }
 
     }
 }
