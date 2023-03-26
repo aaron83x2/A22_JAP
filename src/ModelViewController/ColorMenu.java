@@ -8,7 +8,8 @@ import java.awt.event.ActionListener;
 public class ColorMenu extends JFrame implements ActionListener {
 
 
-    PicrossModel model;
+
+
 
     //Displayed Colors
     JPanel correct;
@@ -27,6 +28,7 @@ public class ColorMenu extends JFrame implements ActionListener {
 
 
     PicrossView view;
+    PicrossModel model = new PicrossModel();
 
 
 
@@ -56,6 +58,7 @@ public class ColorMenu extends JFrame implements ActionListener {
         //Correct
         correct = new JPanel();
         correct.setPreferredSize(new Dimension(100,60));
+//        correct.setBackground(getCorrectColor());
         correct.setBackground(Color.GREEN);
         colorsPanel.add(correct);
 
@@ -95,13 +98,13 @@ public class ColorMenu extends JFrame implements ActionListener {
     }
 
 
-//    public void setCorrectColor(Color cc){
-//        this.correctColor = cc;
-//    }
-//
-//    public Color getCorrectColor(){
-//        return correctColor;
-//    }
+    public void setCorrectPanel(Color cc){
+        this.correctColor = cc;
+    }
+
+    public Color getCorrectColor(){
+        return correctColor;
+    }
 
 //    public void setIncorrectColor(Color incorrectColor){
 //        this.incorrectColor = incorrectColor;
@@ -131,9 +134,14 @@ public class ColorMenu extends JFrame implements ActionListener {
 
 
         if(e.getSource() == correctButton){
+
             correctColor = JColorChooser.showDialog(this, "Select a Color", correctColor);
             correct.setBackground(correctColor);
-//            this.dispose();
+
+            view = new PicrossView(5,5);
+            view.setCorrectColor(correctColor);
+
+            this.dispose();
         }
 
         if(e.getSource() == incorrectButton){

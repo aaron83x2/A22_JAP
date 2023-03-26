@@ -5,8 +5,11 @@ public class MVCDriver {
 
     public static void main(String[]args){
 
-        PicrossModel model = new PicrossModel(5,5);
+        PicrossModel model = new PicrossModel(4,4);
         PicrossView view = new PicrossView(model.getDimX(),model.getDimY());
+
+
+
 
 
     }

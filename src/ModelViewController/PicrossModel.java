@@ -43,6 +43,8 @@ public class PicrossModel {
         this.row = row;
     }
 
+    public PicrossModel(){}
+
 
     public void setDimX(int columns){
         col = columns;

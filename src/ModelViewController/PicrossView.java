@@ -1,6 +1,7 @@
 package ModelViewController;
 
 import javax.swing.*;
+import javax.xml.transform.SourceLocator;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -58,24 +59,28 @@ public class PicrossView extends JFrame  {
 
     //Points
     JTextField pointsTitle;
-    private int pointsCounter = 0;
+    protected int pointsCounter = 0;
 
     Random rand  = new Random();
     Boolean[][] sol;
 
-
-
-
     JButton markButton;
+    JButton menu;
 
 
 
 
-    PicrossModel model = new PicrossModel(5,5);
+    //PicrossModel model = new PicrossModel(5,5);
     //Controller controller = new Controller(model,new View());
     //ColorMenu colrMenu = new ColorMenu();
 
     //public View(){}
+
+//    Controls ctrl = new Controls();
+
+
+    PicrossModel model = new PicrossModel();
+
 
 
     public PicrossView(int dimX, int dimY){
@@ -86,11 +91,15 @@ public class PicrossView extends JFrame  {
         buttons = new JButton[row][col];
         sol = new Boolean[row][col];
 
-        model.setCorrectColor(Color.GREEN);
-        defaultColor = model.getCorrectColor();
+        //model.setCorrectColor(Color.GREEN);
+//        defaultColor = model.getCorrectColor();
+        defaultColor = Color.GREEN;
 
 //        System.out.println(model.getCorrectColor());
         //historyArea.append("Color: " + model.getCorrectColor());
+
+        PicrossModel model = new PicrossModel();
+
 
         //Window
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -98,7 +107,6 @@ public class PicrossView extends JFrame  {
         this.setSize(1000,700);
         this.setLayout(new BorderLayout());
         this.setVisible(true);
-
 
         //Menu Bar
         JMenuBar menuBar = new JMenuBar();
@@ -112,24 +120,24 @@ public class PicrossView extends JFrame  {
         //New Icon
         newIcon = new ImageIcon("C:\\Users\\aaron\\workspace1\\A22\\src\\piciconnew.gif");
         New.setIcon(newIcon);
-//        New.addActionListener(e->newGame());
-//        New.addActionListener(Controller::handleButtonClick);
 
-        New.addActionListener(e-> newGame());
+
+        New.addActionListener(new Controls(this,New, solution, exit, markButton, buttons));
+       // New.addActionListener(new Controls(New,solution,exit, colors, about,load,save));
         game.add(New);
 
         //Adding Solution Item to Game
         solution = new JMenuItem("Solution");
         solIcon = new ImageIcon("C:\\Users\\aaron\\workspace1\\A22\\src\\piciconsol.gif");
         solution.setIcon(solIcon);
-        solution.addActionListener(e->showSolution());
+        solution.addActionListener(new Controls(this, New, solution, exit, markButton, buttons));
         game.add(solution);
 
         //Add Exit item to Game
         exit = new JMenuItem("Exit");
         exitIcon = new ImageIcon("C:\\Users\\aaron\\workspace1\\A22\\src\\piciconext.gif");
         exit.setIcon(exitIcon);
-        exit.addActionListener(e->exit());
+        exit.addActionListener(new Controls(this, New, solution, exit, markButton,buttons));
         game.add(exit);
 
 
@@ -186,9 +194,11 @@ public class PicrossView extends JFrame  {
         left.setLayout(new GridLayout(row,1));
 
 
+
         for(int  i = 0; i<row;i++){
             nums[i] = new JTextField();
             nums[i].setEditable(false);
+            nums[i].setBackground(Color.GRAY);
             nums[i].setText("1");
             nums[i].setHorizontalAlignment(JTextField.CENTER);
 //            nums[i].setBorder(null);
@@ -220,7 +230,8 @@ public class PicrossView extends JFrame  {
         markButton = new JButton("Mark");
         markButton.setSize(200,200);
 
-        markButton.addActionListener(e -> markCheck());
+//        markButton.addActionListener(e -> markCheck());
+        markButton.addActionListener(new Controls(this,New,solution,exit,markButton, buttons));
         space.add(markButton);
         top.add(space);
 
@@ -233,10 +244,6 @@ public class PicrossView extends JFrame  {
 //        //mark.setBackground(Color.PINK);
 //        space.add(mark);
 //        top.add(space);
-
-
-
-
 
 
 
@@ -255,9 +262,7 @@ public class PicrossView extends JFrame  {
 
         //History Text Area
         historyArea = new JTextArea(21,10);
-//        historyArea = new JTextArea();
         JScrollPane sp = new JScrollPane(historyArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
         historyArea.setPreferredSize(new Dimension(120,360));
         historyArea.setEditable(false);
         right.add(sp);
@@ -279,6 +284,9 @@ public class PicrossView extends JFrame  {
         cnt.setBackground(Color.WHITE);
         cnt.setLayout(new GridLayout(col, row));
 
+        int countRows = 0;
+        int countCols = 0;
+
         //Create Button Grid
         for(int  i = 0; i<row; i++){
             for(int j = 0; j<col;j++){
@@ -288,20 +296,30 @@ public class PicrossView extends JFrame  {
             sol[i][j] = newBool();
             buttons[i][j].setText(String.valueOf(sol[i][j]));
 
+            if(buttons[i][j].getText().equals("true")){
+                countCols++;
+            }
+
+
             int finalI = i; // Passed in to find the position of the row
             int finalJ = j;// Passed in to find the position of the col
-            buttons[i][j].addActionListener(e -> buttonClick(finalI,finalJ));
+//            buttons[i][j].addActionListener(e -> buttonClick(finalI,finalJ));
+                buttons[i][j].addActionListener(new Controls(this,New,solution,exit,markButton, buttons));
 
 //               buttons[i][j].addActionListener(e-> Controller.handleButtonClick());
             cnt.add(buttons[i][j]);
             }
         }
+
+        //System.out.println(countCols);
+
         this.add(cnt,BorderLayout.CENTER);
 
         pointsTitle = new JTextField();
         pointsTitle.setBorder(null);
         pointsTitle.setEditable(false);
-        pointsTitle.setBackground(Color.PINK);
+        pointsTitle.setBackground(Color.LIGHT_GRAY);
+        pointsTitle.setHorizontalAlignment(JTextField.CENTER);
         pointsTitle.setText("Points: " + pointsCounter);
         top.add(pointsTitle);
 
@@ -320,44 +338,25 @@ public class PicrossView extends JFrame  {
         right.add(reset);
         this.add(bottom, BorderLayout.SOUTH);
 
-    }
-
-
-
-
-    public void buttonClick(int xPos, int yPos){
-
-        if( buttons[xPos][yPos].getText().equals("false")){
-            buttons[xPos][yPos].setBackground(Color.RED);
-        } else {
-            buttons[xPos][yPos].setBackground(defaultColor);
-            pointsCounter++;
-            pointsTitle.setText(String.valueOf(pointsCounter));
-        }
-        historyArea.append("Pos: " + (xPos+1) +"," + (yPos+1) +" clicked" +"\n");
-    }
-
-
-
-    public void markCheck(){
-//        historyArea.append( " " + "\n");
-
-        if(markButton.isSelected()){
-
-            System.out.println("Selected");
-        }
-        for(int  i = 0; i<row; i++) {
-            for (int j = 0; j < col; j++) {
-
-                if(buttons[i][j].getText().equals("false")){
-                    buttons[i][j].setBackground(Color.YELLOW);
-                }
-//
-            }
-        }
+        ///Menu Button
+        menu  = new JButton();
+//        menu.addActionListener(new Controls(menu));
+        menu.setText("Menu");
+        menu.setPreferredSize(new Dimension(140,50));
+        bottom.add(menu);
 
     }
 
+    public PicrossView() {}
+
+
+    public void setCorrectColor(Color cc){
+        defaultColor = cc;
+    }
+
+    public Color getCorrectColor(){
+        return defaultColor;
+    }
 
 
     public void resetGrid(){
@@ -368,16 +367,11 @@ public class PicrossView extends JFrame  {
             }
         }
         pointsCounter = 0;
-        pointsTitle.setText(String.valueOf(pointsCounter));
+        pointsTitle.setText("Points: "+ pointsCounter);
         historyArea.append("Reset Clicked." + "\n");
     }
 
 
-
-    public void newGame(){
-        this.dispose();
-        new PicrossView(5,5);
-    }
 
     public boolean newBool(){
 //        this.dispose();
@@ -386,28 +380,26 @@ public class PicrossView extends JFrame  {
         return newBool;
     }
 
-    public void showSolution(){
-        for(int i = 0; i<sol.length;i++){
-            for(int j = 0; j<sol.length;j++){
-                historyArea.append("Pos: " + (i+1) +"," + (j+1) +": "+ String.valueOf(sol[i][j]) + "\n");
-            }
-        }
-    }
-
-
-    public void exit(){
-        this.dispose();
-        MainMenu menu = new MainMenu();
-    }
-
-
 
     public void setNewColor(){
         ColorMenu menu = new ColorMenu();
-        menu.setBackground(model.getCorrectColor());
+
+//        menu.setCorrectColor(defaultColor);
+
+
+
+       // markButton.setBackground(model.getCorrectColor());
+//        System.out.println(model.getCorrectColor());
 
         //this.defaultColor = color;
     }
+
+    public void setGridColor(Color color){
+
+
+    }
+
+
 
     public void about(){
         JOptionPane.showMessageDialog(null,"Use the numbers as hints to select" +
@@ -442,9 +434,7 @@ public class PicrossView extends JFrame  {
 
         }
         outputFile.close();
-
         System.out.println("saved");
-
 
     }
 

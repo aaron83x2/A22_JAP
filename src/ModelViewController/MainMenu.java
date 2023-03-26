@@ -21,6 +21,7 @@ public class MainMenu extends JFrame {
 
 
     JButton play;
+    JButton color;
 
 
 
@@ -43,7 +44,6 @@ public class MainMenu extends JFrame {
         //Where all the bottom components will go
         JPanel bottomPanel = new JPanel();
         bottomPanel.setSize(140,100);
-//        bottomPanel.setBackground(Color.PINK);
         bottomPanel.setLayout(new FlowLayout());
 
         //Grid Sizes
@@ -61,7 +61,9 @@ public class MainMenu extends JFrame {
         bottomPanel.add(lang2);
 
 
-        play = new JButton();
+
+        color = new JButton();
+
 
         this.pack();
 
