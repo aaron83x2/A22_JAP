@@ -35,18 +35,23 @@ public class Controls implements ActionListener {
 
 //    public Controls(JMenuItem newClick, JMenuItem solutionClick, JMenuItem exitClick, JMenuItem colorsClick, JMenuItem aboutClick, JMenuItem loadClick, JMenuItem saveClick){
 
-    public Controls(PicrossView view, JMenuItem newClick, JMenuItem solutionClick, JMenuItem exitClick, JButton markClick, JButton[][] gridClicks){
+    public Controls(PicrossView view,
+                    JMenuItem newClick, JMenuItem solutionClick, JMenuItem exitClick,
+                    JMenuItem colorsClick, JMenuItem aboutClick,
+                    JMenuItem saveClick, JMenuItem loadClick,
+                    JButton markClick, JButton[][] gridClicks, JButton resetClick){
 
         this.view = view;
         this.newClick = newClick;
         this.solutionClick = solutionClick;
         this.exitClick = exitClick;
+        this.colorsClick = colorsClick;
+        this.aboutClick = aboutClick;
         this.markClick = markClick;
+        this.saveClick = saveClick;
+        this.loadClick = loadClick;
+        this.resetClick = resetClick;
         this.gridClicks = gridClicks;
-//        this.colorsClick = colorsClick;
-//        this.aboutClick = aboutClick;
-//        this.loadClick = loadClick;
-//        this.saveClick = saveClick;
     }
 
 
@@ -105,6 +110,21 @@ public class Controls implements ActionListener {
                 }
             }
 
+            if(e.getSource() == view.reset){
+                for(int  i = 0; i<view.row; i++) {
+                    for (int j = 0; j < view.col; j++) {
+                        view.buttons[i][j].setBackground(view.getBackground());
+                    }
+                }
+                view.pointsCounter = 0;
+                view.pointsTitle.setText("Points: "+ view.pointsCounter);
+                view.historyArea.append("Reset Clicked." + "\n");
+            }
 
+            if(e.getSource() == view.about){
+                JOptionPane.showMessageDialog(null,"Use the numbers as hints to select" +
+                        "the correct button. Green means the button selected is correct and Red means that the button selected is " +
+                        "incorrect.","Picross",JOptionPane.INFORMATION_MESSAGE);
+            }
     }
 }

@@ -122,22 +122,36 @@ public class PicrossView extends JFrame  {
         New.setIcon(newIcon);
 
 
-        New.addActionListener(new Controls(this,New, solution, exit, markButton, buttons));
-       // New.addActionListener(new Controls(New,solution,exit, colors, about,load,save));
+        New.addActionListener(
+                new Controls(this, New, solution,
+                        exit,colors,about,
+                        save,load, markButton,
+                        buttons, reset)
+        );
+
         game.add(New);
 
         //Adding Solution Item to Game
         solution = new JMenuItem("Solution");
         solIcon = new ImageIcon("C:\\Users\\aaron\\workspace1\\A22\\src\\piciconsol.gif");
         solution.setIcon(solIcon);
-        solution.addActionListener(new Controls(this, New, solution, exit, markButton, buttons));
+
+        solution.addActionListener(new Controls(this, New, solution,
+                exit,colors,about,
+                save,load, markButton,
+                buttons, reset));
         game.add(solution);
 
         //Add Exit item to Game
         exit = new JMenuItem("Exit");
         exitIcon = new ImageIcon("C:\\Users\\aaron\\workspace1\\A22\\src\\piciconext.gif");
         exit.setIcon(exitIcon);
-        exit.addActionListener(new Controls(this, New, solution, exit, markButton,buttons));
+
+        exit.addActionListener(new Controls(this, New, solution,
+                exit,colors,about,
+                save,load, markButton,
+                buttons, reset));
+
         game.add(exit);
 
 
@@ -155,7 +169,12 @@ public class PicrossView extends JFrame  {
         about = new JMenuItem("About");
         aboutIcon = new ImageIcon("C:\\Users\\aaron\\workspace1\\A22\\src\\piciconabt.gif");
         about.setIcon(aboutIcon);
-        about.addActionListener(e -> about());
+        about.addActionListener(new Controls(this, New, solution,
+                exit,colors,about,
+                save,load, markButton,
+                buttons, reset));
+
+//        about.addActionListener(e -> about());
         help.add(about);
 
 
@@ -164,18 +183,19 @@ public class PicrossView extends JFrame  {
 
         //Adding load to File
         load = new JMenuItem("Load");
-        load.addActionListener(e -> loadFile());
+
+        load.addActionListener(new Controls(this, New, solution,
+                exit,colors,about,
+                save, load, markButton,
+                buttons, reset));
         file.add(load);
 
         //Adding Save to File
         save = new JMenuItem("Save");
-        save.addActionListener(e-> {
-            try {
-                saveFile();
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
-            }
-        });
+        save.addActionListener(new Controls(this, New, solution,
+                exit,colors,about,
+                save,load, markButton,
+                buttons, reset));
         file.add(save);
 
 
@@ -231,7 +251,10 @@ public class PicrossView extends JFrame  {
         markButton.setSize(200,200);
 
 //        markButton.addActionListener(e -> markCheck());
-        markButton.addActionListener(new Controls(this,New,solution,exit,markButton, buttons));
+        markButton.addActionListener(new Controls(this, New, solution,
+                exit,colors,about,
+                save,load, markButton,
+                buttons, reset));
         space.add(markButton);
         top.add(space);
 
@@ -299,14 +322,12 @@ public class PicrossView extends JFrame  {
             if(buttons[i][j].getText().equals("true")){
                 countCols++;
             }
+                buttons[i][j].addActionListener(new Controls(this, New, solution,
+                        exit,colors,about,
+                        save,load, markButton,
+                        buttons, reset)
+                );
 
-
-            int finalI = i; // Passed in to find the position of the row
-            int finalJ = j;// Passed in to find the position of the col
-//            buttons[i][j].addActionListener(e -> buttonClick(finalI,finalJ));
-                buttons[i][j].addActionListener(new Controls(this,New,solution,exit,markButton, buttons));
-
-//               buttons[i][j].addActionListener(e-> Controller.handleButtonClick());
             cnt.add(buttons[i][j]);
             }
         }
@@ -333,21 +354,18 @@ public class PicrossView extends JFrame  {
         //Reset Button
         reset = new JButton();
         reset.setText("Reset");
-        reset.addActionListener(e-> resetGrid());
+        reset.addActionListener(new Controls(this, New, solution,
+                exit,colors,about,
+                save,load, markButton,
+                buttons, reset));
+
         reset.setPreferredSize(new Dimension(70,20));
         right.add(reset);
         this.add(bottom, BorderLayout.SOUTH);
 
-        ///Menu Button
-        menu  = new JButton();
-//        menu.addActionListener(new Controls(menu));
-        menu.setText("Menu");
-        menu.setPreferredSize(new Dimension(140,50));
-        bottom.add(menu);
-
     }
 
-    public PicrossView() {}
+
 
 
     public void setCorrectColor(Color cc){
@@ -359,17 +377,6 @@ public class PicrossView extends JFrame  {
     }
 
 
-    public void resetGrid(){
-
-        for(int  i = 0; i<row; i++) {
-            for (int j = 0; j < col; j++) {
-                buttons[i][j].setBackground(getBackground());
-            }
-        }
-        pointsCounter = 0;
-        pointsTitle.setText("Points: "+ pointsCounter);
-        historyArea.append("Reset Clicked." + "\n");
-    }
 
 
 
@@ -383,38 +390,19 @@ public class PicrossView extends JFrame  {
 
     public void setNewColor(){
         ColorMenu menu = new ColorMenu();
-
 //        menu.setCorrectColor(defaultColor);
-
-
 
        // markButton.setBackground(model.getCorrectColor());
 //        System.out.println(model.getCorrectColor());
-
         //this.defaultColor = color;
     }
 
-    public void setGridColor(Color color){
-
-
-    }
-
-
-
-    public void about(){
-        JOptionPane.showMessageDialog(null,"Use the numbers as hints to select" +
-                "the correct button. Green means the button selected is correct and Red means that the button selected is " +
-                "incorrect.","Picross",JOptionPane.INFORMATION_MESSAGE);
-
-    }
 
 
     public void loadFile(){
         JFileChooser fileChooser = new JFileChooser();
 
-       // int response = fileChooser.showOpenDialog(null);//Select file to open
-        int response = fileChooser.showSaveDialog(null);//select file to open
-
+        int response = fileChooser.showSaveDialog(null);
 
         if(response == JFileChooser.APPROVE_OPTION){
             File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
